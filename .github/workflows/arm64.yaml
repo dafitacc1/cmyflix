@@ -13,16 +13,16 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Build Static ARM64 DEB via Container
+      - name: Build Compatible ARM64 DEB via Container
         run: |
           docker run --rm \
             --platform linux/arm64 \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
-            arm64v8/ubuntu:24.04 sh -c "
+            arm64v8/debian:12 sh -c "
               apt-get update && \
               apt-get install -y build-essential libbsd-dev libcjson-dev libcurl4-openssl-dev dpkg-dev && \
-              make LDFLAGS='-static -lbsd -lcjson -lcurl' deb
+              make deb
             "
 
       - name: Upload DEB artifact
